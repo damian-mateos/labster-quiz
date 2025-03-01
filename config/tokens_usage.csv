@@ -1,0 +1,2 @@
+id,finish_reason,model,service_tier,completion_tokens,prompt_tokens,total_tokens
+chatcmpl-B6GI2I4PRP1NrcyTyR4xb86jSd3Pi,stop,gpt-4o-mini-2024-07-18,default,250,46,296

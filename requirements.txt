@@ -1,0 +1,5 @@
+# General dependencies
+pyyaml==6.0.2
+
+# LLM dependencies
+openai==1.65.1

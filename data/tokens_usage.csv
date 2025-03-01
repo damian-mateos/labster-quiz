@@ -1,0 +1,3 @@
+id,finish_reason,model,service_tier,completion_tokens,prompt_tokens,total_tokens
+chatcmpl-B6F9ydElaGcbFwfeyXbGIpvfRQiiz,stop,gpt-4o-mini-2024-07-18,default,248,46,294
+chatcmpl-B6GLQMc6xoHjm5JvAyzMXbDwDZd7Y,stop,gpt-4o-mini-2024-07-18,default,131,46,177
