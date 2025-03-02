@@ -1,3 +1,10 @@
 id,finish_reason,model,service_tier,completion_tokens,prompt_tokens,total_tokens
 chatcmpl-B6F9ydElaGcbFwfeyXbGIpvfRQiiz,stop,gpt-4o-mini-2024-07-18,default,248,46,294
 chatcmpl-B6GLQMc6xoHjm5JvAyzMXbDwDZd7Y,stop,gpt-4o-mini-2024-07-18,default,131,46,177
+chatcmpl-B6Jbux7rbdZRiH3TpAkFkQYB23E7h,stop,gpt-4o-mini-2024-07-18,default,148,46,194
+chatcmpl-B6JcRBfw1mw90qjm7SGJt8oQwSogG,stop,gpt-4o-mini-2024-07-18,default,194,46,240
+chatcmpl-B6JqhY4XRSAibMBGe9fp7O1uvC06e,stop,gpt-4o-mini-2024-07-18,default,148,46,194
+chatcmpl-B6aAQQM4wdD4Z6b5IV0YjI6DKdmPQ,stop,gpt-4o-mini-2024-07-18,default,211,46,257
+chatcmpl-B6aBcxdNf8JnVekxZd60lUkSUHxM1,stop,gpt-4o-mini-2024-07-18,default,170,46,216
+chatcmpl-B6aIY3J8ddwfmm9fvhymC3dZl38mg,stop,gpt-4o-mini-2024-07-18,default,138,46,184
+chatcmpl-B6aIxenInma71m050xcXrFayKzHQn,stop,gpt-4o-mini-2024-07-18,default,169,46,215
