@@ -1,4 +1,4 @@
-<!-- version 1.0.0 -->
+<!-- version 1.0.1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,23 +9,43 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f0f0f0;
         }
-        #quiz-form {
+        #quiz-form, #answer-form {
             margin-bottom: 20px;
         }
-        #question-output {
+        #question-output, #result-message {
             margin-top: 20px;
             padding: 10px;
             border: 1px solid #ccc;
+            background-color: #ffffff;
         }
-        #cost-counter {
+        .result-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .result-failure {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        #cost-counter, #answer-ratio {
             position: fixed;
-            bottom: 10px;
-            right: 10px;
-            padding: 23px; /* Increase box size by 15% */
+            padding: 23px;
             border: 1px solid #ccc;
             background-color: #f9f9f9;
-            font-size: 16px; /* Increase font size for better readability */
+            font-size: 16px;
+        }
+        #cost-counter {
+            bottom: 10px;
+            right: 10px;
+            background-color: #e0f7fa;
+        }
+        #answer-ratio {
+            top: 10px;
+            right: 10px;
+            background-color: #ffcdd2; 
         }
     </style>
 </head>
@@ -37,140 +57,35 @@
         <button type="submit">Generate Question</button>
     </form>
     <div id="question-output"></div>
-    <div id="cost-counter">Current API Cost: Loading...</div>
-
-    <script>
-        async function generateQuestion(event) {
-            event.preventDefault();
-            const objective = document.getElementById('objective').value;
-            const response = await fetch('http://127.0.0.1:5000/generate_question', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ learning_objective: objective })
-            });
-            const data = await response.json();
-            document.getElementById('question-output').innerText = data.question;
-            updateCostCounter();  // Update cost counter after generating question
-        }
-
-        async function updateCostCounter() {
-            const response = await fetch('http://127.0.0.1:5000/current_cost');
-            const data = await response.json();
-            document.getElementById('cost-counter').innerText = `Current API Cost: $${data.current_cost.toFixed(7)}`;
-        }
-
-        document.getElementById('quiz-form').addEventListener('submit', generateQuestion);
-        setInterval(updateCostCounter, 60000); // Update cost counter every 60 seconds
-        updateCostCounter(); // Initial cost update when the page is loaded
-    </script>
-</body>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Question Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #quiz-form {
-            margin-bottom: 20px;
-        }
-        #question-output {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-        #cost-counter {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            padding: 20px; /* Make the box bigger */
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-            font-size: 16px; /* Increase font size for better readability */
-        }
-    </style>
-</head>
-<body>
-    <h1>Quiz Question Generator</h1>
-    <form id="quiz-form">
-        <label for="objective">Learning Objective:</label>
-        <input type="text" id="objective" name="objective" required>
-        <button type="submit">Generate Question</button>
-    </form>
-    <div id="question-output"></div>
-    <div id="cost-counter">Current API Cost: Loading...</div>
-
-    <script>
-        async function generateQuestion(event) {
-            event.preventDefault();
-            const objective = document.getElementById('objective').value;
-            const response = await fetch('http://127.0.0.1:5000/generate_question', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ learning_objective: objective })
-            });
-            const data = await response.json();
-            document.getElementById('question-output').innerText = data.question;
-        }
-
-        async function updateCostCounter() {
-            const response = await fetch('http://127.0.0.1:5000/current_cost');
-            const data = await response.json();
-            document.getElementById('cost-counter').innerText = `Current LLM API Cost: $${data.current_cost.toFixed(4)}`;
-        }
-
-        document.getElementById('quiz-form').addEventListener('submit', generateQuestion);
-        setInterval(updateCostCounter, 60000); // Update cost counter every 60 seconds
-        updateCostCounter(); // Initial cost update
-    </script>
-</body>
-</html> -->
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Question Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #quiz-form {
-            margin-bottom: 20px;
-        }
-        #question-output {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-        #cost-counter {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-        }
-    </style>
-</head>
-<body>
-    <h1>Quiz Question Generator</h1>
-    <form id="quiz-form">
-        <label for="objective">Learning Objective:</label>
-        <input type="text" id="objective" name="objective" required>
-        <button type="submit">Generate Question</button>
-    </form>
-    <div id="question-output"></div>
+    <div id="result-message"></div>
     <div id="cost-counter"></div>
+    <div id="answer-ratio">0/0</div>
 
     <script>
+        let correctAnswers = 0;
+        let totalQuestions = 0;
+
+        function updateAnswerRatio() {
+            const ratioElement = document.getElementById('answer-ratio');
+            const ratio = correctAnswers / totalQuestions;
+            ratioElement.innerText = `${correctAnswers}/${totalQuestions}`;
+
+            // Update background color based on ratio
+            if (ratio <= 0.15) {
+                ratioElement.style.backgroundColor = '#ff6666'; // Dark red
+            } else if (ratio <= 0.30) {
+                ratioElement.style.backgroundColor = '#ff8c66'; // Light red
+            } else if (ratio <= 0.45) {
+                ratioElement.style.backgroundColor = '#ffcc66'; // Orange
+            } else if (ratio <= 0.60) {
+                ratioElement.style.backgroundColor = '#ffff66'; // Yellow
+            } else if (ratio <= 0.75) {
+                ratioElement.style.backgroundColor = '#ccff66'; // Light green
+            } else {
+                ratioElement.style.backgroundColor = '#66ff66'; // Strong green
+            }
+        }
+
         async function generateQuestion(event) {
             event.preventDefault();
             const objective = document.getElementById('objective').value;
@@ -180,18 +95,59 @@
                 body: JSON.stringify({ learning_objective: objective })
             });
             const data = await response.json();
-            document.getElementById('question-output').innerText = data.question;
+            
+            // Display the question and options
+            const questionOutput = document.getElementById('question-output');
+            questionOutput.innerHTML = `
+                <div id="question-statement">${data.statement}</div>
+                <form id="answer-form">
+                    <input type="radio" name="option" value="1" id="option1">
+                    <label for="option1">${data.option1}</label><br>
+                    <input type="radio" name="option" value="2" id="option2">
+                    <label for="option2">${data.option2}</label><br>
+                    <input type="radio" name="option" value="3" id="option3">
+                    <label for="option3">${data.option3}</label><br>
+                    <input type="radio" name="option" value="4" id="option4">
+                    <label for="option4">${data.option4}</label><br>
+                    <button type="submit">Submit Answer</button>
+                </form>
+            `;
+            
+            // Add event listener to answer form
+            document.getElementById('answer-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const selectedOption = document.querySelector('input[name="option"]:checked').value;
+                handleAnswerSubmission(selectedOption, data.correct_option, data.explanation);
+            });
+
+            // Update cost counter after generating question
+            updateCostCounter();
+        }
+
+        function handleAnswerSubmission(selectedOption, correctOption, explanation) {
+            const resultMessage = document.getElementById('result-message');
+            totalQuestions++;
+            if (selectedOption == correctOption) {
+                correctAnswers++;
+                resultMessage.innerHTML = `<p class="result-success">Correct! ${explanation}</p>`;
+            } else {
+                resultMessage.innerHTML = `<p class="result-failure">Incorrect. The correct option was ${correctOption}. ${explanation}</p>`;
+            }
+            updateAnswerRatio();
+            // Disable answer buttons
+            const answerForm = document.getElementById('answer-form');
+            const inputs = answerForm.querySelectorAll('input[name="option"]');
+            inputs.forEach(input => input.disabled = true);
+            answerForm.querySelector('button').disabled = true;
         }
 
         async function updateCostCounter() {
             const response = await fetch('http://127.0.0.1:5000/current_cost');
             const data = await response.json();
-            document.getElementById('cost-counter').innerText = `Current API Cost: $${data.current_cost.toFixed(4)}`;
+            document.getElementById('cost-counter').innerText = `Current API Cost: ${data.current_cost.toFixed(7)}$`;
         }
 
         document.getElementById('quiz-form').addEventListener('submit', generateQuestion);
-        setInterval(updateCostCounter, 60000); // Update cost counter every 60 seconds
-        updateCostCounter(); // Initial cost update
     </script>
 </body>
-</html> -->
+</html>
