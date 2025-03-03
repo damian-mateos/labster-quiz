@@ -17,7 +17,7 @@ class QuizQuestionGenerator:
             self, 
             config_file: str = "../config/config.yaml",
             csv_path: str = "../data/tokens_usage.csv",
-            system_message_path: str = "../data/system_message.txt"
+            system_message_path: str = "../config/system_message.txt"
         ):
         """
         Initializes the QuizQuestionGenerator class with the provided config and CSV file paths.

@@ -4,7 +4,7 @@ pyyaml==6.0.2
 # LLM dependencies
 openai==1.65.1
 
-# API
+# API dependencies
 flask==3.1.0
-requests==2.32.3
 flask-cors==5.0.1
+requests==2.32.3
